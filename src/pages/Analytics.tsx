@@ -20,26 +20,39 @@ export default function Analytics() {
 
   const loadAnalytics = async () => {
     try {
-      // TODO: Load analytics from Supabase
-      // For now, use mock data
-      setAnalytics({
+      // Mock analytics data
+      const mockAnalytics = {
         totalProjects: 4,
         activeProjects: 3,
         totalTasks: 25,
         completedTasks: 18,
         teamMembers: 6,
-        productivity: 85
-      });
+        productivity: 85,
+        projectPerformance: [
+          { name: 'Website Redesign', completion: 75, tasks: 12, efficiency: 'High' },
+          { name: 'Mobile App', completion: 45, tasks: 8, efficiency: 'Medium' },
+          { name: 'Marketing Campaign', completion: 90, tasks: 6, efficiency: 'High' },
+          { name: 'API Integration', completion: 30, tasks: 15, efficiency: 'Low' }
+        ],
+        recentActivity: [
+          { action: 'Task completed', project: 'Website Redesign', time: '2 hours ago' },
+          { action: 'New team member added', project: 'Mobile App', time: '1 day ago' },
+          { action: 'Project milestone reached', project: 'Marketing Campaign', time: '3 days ago' }
+        ]
+      };
+      setAnalytics(mockAnalytics);
     } catch (error) {
       console.error('Failed to load analytics:', error);
-      // Use default analytics data if backend is down
+      // Use default analytics data if there's an error
       setAnalytics({
         totalProjects: 0,
         activeProjects: 0,
         totalTasks: 0,
         completedTasks: 0,
         teamMembers: 0,
-        productivity: 85
+        productivity: 0,
+        projectPerformance: [],
+        recentActivity: []
       });
     } finally {
       setIsLoading(false);

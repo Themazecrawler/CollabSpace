@@ -87,6 +87,9 @@ export default function ProjectBoard() {
     setCurrentProject(project || mockProject);
   }, [id, projects, setCurrentProject]);
 
+  // Ensure we always have a project to display
+  const displayProject = currentProject || mockProject;
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-64">
@@ -106,7 +109,7 @@ export default function ProjectBoard() {
   };
 
   const handleTaskUpdate = (updatedTask: Task) => {
-    updateTask(currentProject.id, updatedTask);
+    updateTask(displayProject.id, updatedTask);
     setIsTaskModalOpen(false);
     setSelectedTask(null);
   };
@@ -129,8 +132,8 @@ export default function ProjectBoard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{currentProject.name}</h1>
-          <p className="text-gray-600">{currentProject.description}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{displayProject.name}</h1>
+          <p className="text-gray-600">{displayProject.description}</p>
         </div>
         
         <div className="flex items-center space-x-3">
@@ -161,19 +164,19 @@ export default function ProjectBoard() {
               if (timelineWindow) {
                 timelineWindow.document.write(`
                   <html>
-                    <head><title>Project Timeline - ${currentProject.name}</title></head>
+                    <head><title>Project Timeline - ${displayProject.name}</title></head>
                     <body>
-                      <h1>Project Timeline: ${currentProject.name}</h1>
+                      <h1>Project Timeline: ${displayProject.name}</h1>
                       <div style="margin: 20px 0;">
                         <h2>Project Progress</h2>
                         <div style="background: #f0f0f0; height: 20px; border-radius: 10px; overflow: hidden;">
-                          <div style="background: #4CAF50; height: 100%; width: ${(currentProject.tasks.filter(t => t.status === 'done').length / currentProject.tasks.length) * 100}%;"></div>
+                          <div style="background: #4CAF50; height: 100%; width: ${(displayProject.tasks.filter(t => t.status === 'done').length / displayProject.tasks.length) * 100}%;"></div>
                         </div>
-                        <p>${currentProject.tasks.filter(t => t.status === 'done').length} of ${currentProject.tasks.length} tasks completed</p>
+                        <p>${displayProject.tasks.filter(t => t.status === 'done').length} of ${displayProject.tasks.length} tasks completed</p>
                       </div>
                       <div>
                         <h2>Task Timeline</h2>
-                        ${currentProject.tasks.map(task => `
+                        ${displayProject.tasks.map(task => `
                           <div style="border: 1px solid #ddd; margin: 10px 0; padding: 10px; border-radius: 5px;">
                             <h3>${task.title}</h3>
                             <p>Status: ${task.status}</p>
@@ -197,7 +200,7 @@ export default function ProjectBoard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {columns.map(column => {
-          const columnTasks = currentProject.tasks.filter(task => task.status === column.id);
+          const columnTasks = displayProject.tasks.filter(task => task.status === column.id);
           
           return (
             <div key={column.id} className={`bg-gray-50 rounded-xl p-4 border-t-4 ${column.color}`}>
@@ -246,19 +249,19 @@ export default function ProjectBoard() {
             setSelectedTask(null);
           }}
           onAddTask={(taskData) => {
-            addTask(currentProject.id, taskData);
+            addTask(displayProject.id, taskData);
             setIsTaskModalOpen(false);
             setSelectedTask(null);
           }}
         />
       )}
 
-      {isInviteModalOpen && currentProject && (
+      {isInviteModalOpen && displayProject && (
         <InviteModal
           isOpen={isInviteModalOpen}
           onClose={() => setIsInviteModalOpen(false)}
-          projectId={currentProject.id}
-          projectName={currentProject.name}
+          projectId={displayProject.id}
+          projectName={displayProject.name}
         />
       )}
     </div>
