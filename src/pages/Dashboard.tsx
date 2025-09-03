@@ -11,6 +11,39 @@ export default function Dashboard() {
   const { projects, isLoading, addProject } = useProjects();
   const { user } = useAuth();
 
+  // Mock data for dashboard
+  const mockProjects = [
+    {
+      id: '1',
+      name: 'Website Redesign',
+      description: 'Modern redesign of company website',
+      status: 'active',
+      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-01-20T14:30:00Z',
+      members: ['user1', 'user2'],
+      tasks: [
+        { id: 'task1', title: 'Design Homepage', status: 'in-progress' },
+        { id: 'task2', title: 'Implement Navigation', status: 'done' },
+        { id: 'task3', title: 'Mobile Responsive', status: 'todo' }
+      ]
+    },
+    {
+      id: '2', 
+      name: 'Mobile App Development',
+      description: 'Cross-platform mobile application',
+      status: 'active',
+      createdAt: '2024-01-10T09:00:00Z',
+      updatedAt: '2024-01-18T16:45:00Z',
+      members: ['user1', 'user3'],
+      tasks: [
+        { id: 'task4', title: 'User Authentication', status: 'done' },
+        { id: 'task5', title: 'Push Notifications', status: 'in-progress' }
+      ]
+    }
+  ];
+
+  const displayProjects = projects.length > 0 ? projects : mockProjects;
+
   const stats = [
     {
       title: 'Active Projects',
@@ -103,7 +136,7 @@ export default function Dashboard() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {projects.filter(p => p.status === 'active').map((project) => (
+            {displayProjects.filter(p => p.status === 'active').map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
           </div>

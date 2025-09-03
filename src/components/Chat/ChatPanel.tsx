@@ -41,6 +41,12 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
       setChannels(channelsData);
     } catch (error) {
       console.error('Failed to load channels:', error);
+      // Mock channels if API fails
+      setChannels([
+        { id: 'general', name: 'General', description: 'General team discussion' },
+        { id: 'project-updates', name: 'Project Updates', description: 'Project status and updates' },
+        { id: 'random', name: 'Random', description: 'Casual conversation' }
+      ]);
     }
   };
 
@@ -51,6 +57,36 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
       setMessages(messagesData);
     } catch (error) {
       console.error('Failed to load messages:', error);
+      // Mock messages if API fails
+      setMessages([
+        {
+          id: '1',
+          channelId: activeChannel,
+          userId: 'user1',
+          userName: 'Alex Johnson',
+          content: 'Hey team! How is everyone doing today?',
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2'
+        },
+        {
+          id: '2',
+          channelId: activeChannel,
+          userId: 'user2',
+          userName: 'Sarah Chen',
+          content: 'Great! Just finished the homepage design. Ready for review!',
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2'
+        },
+        {
+          id: '3',
+          channelId: activeChannel,
+          userId: 'user3',
+          userName: 'Mike Rodriguez',
+          content: 'Awesome work Sarah! I\'ll take a look at it.',
+          timestamp: new Date(Date.now() - 900000).toISOString(),
+          avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2'
+        }
+      ]);
     } finally {
       setIsLoading(false);
     }

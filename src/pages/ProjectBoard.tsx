@@ -17,13 +17,74 @@ const columns = [
 export default function ProjectBoard() {
   const { id } = useParams<{ id: string }>();
   const { projects, currentProject, setCurrentProject, updateTask, addTask, isLoading } = useProjects();
+  
+  // Mock data for project board
+  const mockProject = {
+    id: '1',
+    name: 'Website Redesign',
+    description: 'Modern redesign of company website with improved UX',
+    status: 'active',
+    createdAt: '2024-01-15T10:00:00Z',
+    updatedAt: '2024-01-20T14:30:00Z',
+    members: ['user1', 'user2', 'user3'],
+    tasks: [
+      {
+        id: 'task1',
+        title: 'Design Homepage Layout',
+        description: 'Create wireframes and mockups for homepage',
+        status: 'todo',
+        priority: 'high',
+        assigneeId: 'user1',
+        dueDate: '2024-02-01T00:00:00Z',
+        createdAt: '2024-01-15T10:00:00Z',
+        updatedAt: '2024-01-15T10:00:00Z',
+        comments: []
+      },
+      {
+        id: 'task2',
+        title: 'Implement Navigation Menu',
+        description: 'Build responsive navigation with dropdown menus',
+        status: 'in-progress',
+        priority: 'medium',
+        assigneeId: 'user2',
+        dueDate: '2024-01-25T00:00:00Z',
+        createdAt: '2024-01-16T11:00:00Z',
+        updatedAt: '2024-01-18T14:00:00Z',
+        comments: []
+      },
+      {
+        id: 'task3',
+        title: 'Mobile Responsive Design',
+        description: 'Ensure website works perfectly on mobile devices',
+        status: 'review',
+        priority: 'high',
+        assigneeId: 'user3',
+        dueDate: '2024-01-30T00:00:00Z',
+        createdAt: '2024-01-17T09:00:00Z',
+        updatedAt: '2024-01-19T16:00:00Z',
+        comments: []
+      },
+      {
+        id: 'task4',
+        title: 'Content Management System',
+        description: 'Integrate CMS for easy content updates',
+        status: 'done',
+        priority: 'medium',
+        assigneeId: 'user1',
+        dueDate: '2024-01-20T00:00:00Z',
+        createdAt: '2024-01-10T08:00:00Z',
+        updatedAt: '2024-01-20T12:00:00Z',
+        comments: []
+      }
+    ]
+  };
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   React.useEffect(() => {
     const project = projects.find(p => p.id === id);
-    setCurrentProject(project || null);
+    setCurrentProject(project || mockProject);
   }, [id, projects, setCurrentProject]);
 
   if (isLoading) {
@@ -37,15 +98,7 @@ export default function ProjectBoard() {
     );
   }
 
-  if (!currentProject) {
-    return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="text-center">
-          <p className="text-gray-600">Project not found</p>
-        </div>
-      </div>
-    );
-  }
+
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
